@@ -252,6 +252,7 @@ amdgpu_ucode_get_load_type(struct amdgpu_device *adev, int load_type)
 #ifdef CONFIG_DRM_AMDGPU_CIK
 	case CHIP_BONAIRE:
 	case CHIP_KAVERI:
+	case CHIP_LIVERPOOL:
 	case CHIP_KABINI:
 	case CHIP_HAWAII:
 	case CHIP_MULLINS:

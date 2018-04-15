@@ -79,6 +79,20 @@ static const struct kfd_device_info hawaii_device_info = {
 	.needs_pci_atomics = false,
 };
 
+static const struct kfd_device_info liverpool_device_info = {
+	.asic_family = CHIP_LIVERPOOL,
+	.max_pasid_bits = 16,
+	/* max num of queues for KV.TODO should be a dynamic value */
+	.max_no_of_hqd	= 24,
+	.ih_ring_entry_size = 4 * sizeof(uint32_t),
+	.event_interrupt_class = &event_interrupt_class_cik,
+	.num_of_watch_points = 4,
+	.mqd_size_aligned = MQD_SIZE_ALIGNED,
+	.supports_cwsr = false,
+	.needs_iommu_device = true,
+	.needs_pci_atomics = false,
+};
+
 static const struct kfd_device_info tonga_device_info = {
 	.asic_family = CHIP_TONGA,
 	.max_pasid_bits = 16,
@@ -219,6 +233,10 @@ static const struct kfd_deviceid supported_devices[] = {
 	{ 0x67B9, &hawaii_device_info },	/* Hawaii */
 	{ 0x67BA, &hawaii_device_info },	/* Hawaii */
 	{ 0x67BE, &hawaii_device_info },	/* Hawaii */
+	{ 0x9920, &liverpool_device_info },
+	{ 0x9922, &liverpool_device_info },
+	{ 0x9923, &liverpool_device_info },
+	{ 0x9924, &liverpool_device_info },
 	{ 0x6920, &tonga_device_info },		/* Tonga */
 	{ 0x6921, &tonga_device_info },		/* Tonga */
 	{ 0x6928, &tonga_device_info },		/* Tonga */

@@ -1,0 +1,13 @@
+--- linux-4.14.14/drivers/mmc/host/sdhci-pci-core.c	2018-01-17 09:45:30.000000000 +0100
++++ linux-4.14.14-mod/drivers/mmc/host/sdhci-pci-core.c	2018-04-11 14:30:36.789511811 +0200
+@@ -1367,6 +1419,10 @@
+ 	SDHCI_PCI_DEVICE(O2, SDS1,     o2),
+ 	SDHCI_PCI_DEVICE(O2, SEABIRD0, o2),
+ 	SDHCI_PCI_DEVICE(O2, SEABIRD1, o2),
++#ifdef CONFIG_X86_PS4
++	SDHCI_PCI_DEVICE(SONY, AEOLIA_SDHCI, aeolia),
++	SDHCI_PCI_DEVICE(SONY, BELIZE_SDHCI, aeolia),
++#endif
+ 	SDHCI_PCI_DEVICE_CLASS(AMD, SYSTEM_SDHCI, PCI_CLASS_MASK, amd),
+ 	/* Generic SD host controller */
+ 	{PCI_DEVICE_CLASS(SYSTEM_SDHCI, PCI_CLASS_MASK)},

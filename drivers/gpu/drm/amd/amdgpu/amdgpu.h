@@ -91,6 +91,7 @@ extern int amdgpu_hw_i2c;
 extern int amdgpu_pcie_gen2;
 extern int amdgpu_msi;
 extern int amdgpu_lockup_timeout;
+extern int amdgpu_abort_on_lockup;
 extern int amdgpu_dpm;
 extern int amdgpu_fw_load_type;
 extern int amdgpu_aspm;
@@ -180,6 +181,8 @@ extern int amdgpu_cik_support;
 /* max cursor sizes (in pixels) */
 #define CIK_CURSOR_WIDTH 128
 #define CIK_CURSOR_HEIGHT 128
+#define LVP_CURSOR_WIDTH 64
+#define LVP_CURSOR_HEIGHT 64
 
 struct amdgpu_device;
 struct amdgpu_ib;
@@ -1217,6 +1220,8 @@ int amdgpu_gem_info_ioctl(struct drm_device *dev, void *data,
 			  struct drm_file *filp);
 int amdgpu_gem_userptr_ioctl(struct drm_device *dev, void *data,
 			struct drm_file *filp);
+int amdgpu_gem_find_bo_by_cpu_mapping_ioctl(struct drm_device *dev, void *data,
+					    struct drm_file *filp);
 int amdgpu_gem_mmap_ioctl(struct drm_device *dev, void *data,
 			  struct drm_file *filp);
 int amdgpu_gem_wait_idle_ioctl(struct drm_device *dev, void *data,

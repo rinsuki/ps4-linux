@@ -1,0 +1,10 @@
+--- linux-4.14.14/drivers/Makefile	2018-01-17 09:45:30.000000000 +0100
++++ linux-4.14.14-mod/drivers/Makefile	2018-04-11 14:30:32.540511910 +0200
+@@ -87,6 +87,7 @@
+ obj-$(CONFIG_SPI)		+= spi/
+ obj-$(CONFIG_SPMI)		+= spmi/
+ obj-$(CONFIG_HSI)		+= hsi/
++obj-$(CONFIG_X86_PS4)		+= ps4/
+ obj-y				+= net/
+ obj-$(CONFIG_ATM)		+= atm/
+ obj-$(CONFIG_FUSION)		+= message/

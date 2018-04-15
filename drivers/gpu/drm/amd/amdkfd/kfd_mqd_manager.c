@@ -28,6 +28,7 @@ struct mqd_manager *mqd_manager_init(enum KFD_MQD_TYPE type,
 {
 	switch (dev->device_info->asic_family) {
 	case CHIP_KAVERI:
+	case CHIP_LIVERPOOL:
 		return mqd_manager_init_cik(type, dev);
 	case CHIP_HAWAII:
 		return mqd_manager_init_cik_hawaii(type, dev);

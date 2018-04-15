@@ -73,6 +73,7 @@ static const char *amdgpu_asic_name[] = {
 	"BONAIRE",
 	"KAVERI",
 	"KABINI",
+	"LIVERPOOL",
 	"HAWAII",
 	"MULLINS",
 	"TOPAZ",
@@ -1338,6 +1339,7 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
 	case CHIP_KAVERI:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
+	case CHIP_LIVERPOOL:
 #endif
 	default:
 		return 0;
@@ -1460,6 +1462,7 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
 	case CHIP_KAVERI:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
+	case CHIP_LIVERPOOL:
 		if ((adev->asic_type == CHIP_BONAIRE) || (adev->asic_type == CHIP_HAWAII))
 			adev->family = AMDGPU_FAMILY_CI;
 		else
@@ -2082,6 +2085,7 @@ bool amdgpu_device_asic_has_dc_support(enum amd_asic_type asic_type)
 	case CHIP_BONAIRE:
 	case CHIP_HAWAII:
 	case CHIP_KAVERI:
+	case CHIP_LIVERPOOL:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
 	case CHIP_CARRIZO:
@@ -3178,7 +3182,12 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
 		 * after above amdgpu_reset accomplished
 		 */
 		if ((!job || job->ring->idx == i) && !r)
-			drm_sched_job_recovery(&ring->sched);
+		{
+			if (amdgpu_abort_on_lockup)
+				drm_sched_job_abort(&ring->sched);
+			else
+				drm_sched_job_recovery(&ring->sched);
+		}
 
 		kthread_unpark(ring->sched.thread);
 	}

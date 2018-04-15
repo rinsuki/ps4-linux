@@ -1492,6 +1492,7 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
 	case CHIP_BONAIRE:
 	case CHIP_HAWAII:
 	case CHIP_KAVERI:
+	case CHIP_LIVERPOOL:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
 	case CHIP_TONGA:
@@ -1665,6 +1666,12 @@ static int dm_early_init(void *handle)
 		adev->mode_info.num_crtc = 2;
 		adev->mode_info.num_hpd = 6;
 		adev->mode_info.num_dig = 6;
+		adev->mode_info.plane_type = dm_plane_type_default;
+		break;
+	case CHIP_LIVERPOOL:
+		adev->mode_info.num_crtc = 2;
+		adev->mode_info.num_hpd = 3;
+		adev->mode_info.num_dig = 3;
 		adev->mode_info.plane_type = dm_plane_type_default;
 		break;
 	case CHIP_FIJI:

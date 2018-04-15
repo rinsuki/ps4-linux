@@ -1,0 +1,10 @@
+--- linux-4.14.14/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c	2018-01-17 09:45:30.000000000 +0100
++++ linux-4.14.14-mod/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c	2018-04-11 14:30:33.417511890 +0200
+@@ -91,6 +95,7 @@
+ int amdgpu_pcie_gen2 = -1;
+ int amdgpu_msi = -1;
+ int amdgpu_lockup_timeout = 0;
++int amdgpu_abort_on_lockup = 0;
+ int amdgpu_dpm = -1;
+ int amdgpu_fw_load_type = -1;
+ int amdgpu_aspm = -1;

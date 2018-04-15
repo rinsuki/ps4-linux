@@ -1564,6 +1564,7 @@ struct device_queue_manager *device_queue_manager_init(struct kfd_dev *dev)
 		break;
 
 	case CHIP_KAVERI:
+	case CHIP_LIVERPOOL:
 		device_queue_manager_init_cik(&dqm->asic_ops);
 		break;
 

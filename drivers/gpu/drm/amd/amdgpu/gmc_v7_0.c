@@ -143,6 +143,7 @@ static int gmc_v7_0_init_microcode(struct amdgpu_device *adev)
 	case CHIP_KAVERI:
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
+	case CHIP_LIVERPOOL:
 		return 0;
 	default: BUG();
 	}
@@ -401,6 +402,7 @@ static int gmc_v7_0_mc_init(struct amdgpu_device *adev)
 		case CHIP_KAVERI:  /* UVD, VCE do not support GPUVM */
 		case CHIP_KABINI:  /* UVD, VCE do not support GPUVM */
 		case CHIP_MULLINS: /* UVD, VCE do not support GPUVM */
+		case CHIP_LIVERPOOL:
 			adev->gmc.gart_size = 1024ULL << 20;
 			break;
 #endif
@@ -671,7 +673,18 @@ static int gmc_v7_0_gart_enable(struct amdgpu_device *adev)
 			WREG32(mmVM_CONTEXT8_PAGE_TABLE_BASE_ADDR + i - 8,
 			       adev->gart.table_addr >> 12);
 	}
-
+	if (adev->asic_type == CHIP_LIVERPOOL) {
+		for (i = 2; i < 8; i++) {
+			WREG32(mmVM_CONTEXT0_PAGE_TABLE_START_ADDR + i, 0);
+			WREG32(mmVM_CONTEXT0_PAGE_TABLE_END_ADDR + i,
+			       adev->vm_manager.max_pfn - 1);
+		}
+		for (i = 0; i < 8; i++) {
+			WREG32(mmVM_CONTEXT8_PAGE_TABLE_START_ADDR + i, 0);
+			WREG32(mmVM_CONTEXT8_PAGE_TABLE_END_ADDR + i,
+			       adev->vm_manager.max_pfn - 1);
+		}
+	}
 	/* enable context1-15 */
 	WREG32(mmVM_CONTEXT1_PROTECTION_FAULT_DEFAULT_ADDR,
 	       (u32)(adev->dummy_page_addr >> 12));

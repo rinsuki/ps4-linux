@@ -1,0 +1,266 @@
+
+amd/display/include/dal_asic_id.h:#define FAMILY_KV 125 /* Fusion => Kaveri: Spectre, Spooky; Kabini: Kalindi */
+amd/amdkfd/kfd_flat_memory.c: * beyond 7.0 (Kaveri) are:
+amd/amdkfd/kfd_priv.h: * definitions for Kaveri. In Kaveri only the first ME queues participates
+amd/amdkfd/kfd_device.c:static const struct kfd_device_info kaveri_device_info = {
+amd/amdkfd/kfd_device.c:	.asic_family = CHIP_KAVERI,
+amd/amdkfd/kfd_device.c:	{ 0x1304, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1305, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1306, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1307, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1309, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x130A, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x130B, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x130C, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x130D, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x130E, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x130F, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1310, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1311, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1312, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1313, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1315, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1316, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1317, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x1318, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x131B, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x131C, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_device.c:	{ 0x131D, &kaveri_device_info },	/* Kaveri */
+amd/amdkfd/kfd_mqd_manager.c:	case CHIP_KAVERI:
+amd/amdkfd/kfd_crat.c:static struct kfd_gpu_cache_info kaveri_cache_info[] = {
+amd/amdkfd/kfd_crat.c:#define hawaii_cache_info kaveri_cache_info
+amd/amdkfd/kfd_crat.c:	case CHIP_KAVERI:
+amd/amdkfd/kfd_crat.c:		pcache_info = kaveri_cache_info;
+amd/amdkfd/kfd_crat.c:		num_of_cache_types = ARRAY_SIZE(kaveri_cache_info);
+amd/amdkfd/kfd_mqd_manager_cik.c: * The HIQ queue in Kaveri is using the same MQD structure as all the user mode
+amd/amdkfd/kfd_mqd_manager.h: * ASIC. Currently the kfd driver supports only Kaveri so there are instances
+amd/amdkfd/kfd_device_queue_manager.c:	 * FIXME: This argument also applies to Kaveri.
+amd/amdkfd/kfd_device_queue_manager.c:	case CHIP_KAVERI:
+amd/amdkfd/kfd_kernel_queue.c:	case CHIP_KAVERI:
+amd/amdkfd/kfd_topology.c:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c:MODULE_FIRMWARE("radeon/kaveri_pfp.bin");
+amd/amdgpu/gfx_v7_0.c:MODULE_FIRMWARE("radeon/kaveri_me.bin");
+amd/amdgpu/gfx_v7_0.c:MODULE_FIRMWARE("radeon/kaveri_ce.bin");
+amd/amdgpu/gfx_v7_0.c:MODULE_FIRMWARE("radeon/kaveri_rlc.bin");
+amd/amdgpu/gfx_v7_0.c:MODULE_FIRMWARE("radeon/kaveri_mec.bin");
+amd/amdgpu/gfx_v7_0.c:MODULE_FIRMWARE("radeon/kaveri_mec2.bin");
+amd/amdgpu/gfx_v7_0.c:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c:		chip_name = "kaveri";
+amd/amdgpu/gfx_v7_0.c:	if (adev->asic_type == CHIP_KAVERI || adev->asic_type == CHIP_LIVERPOOL) {
+amd/amdgpu/gfx_v7_0.c:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c:	if (adev->asic_type == CHIP_KAVERI || adev->asic_type == CHIP_LIVERPOOL) {
+amd/amdgpu/gfx_v7_0.c:		if (adev->asic_type == CHIP_KAVERI) {
+amd/amdgpu/gfx_v7_0.c:	if (adev->asic_type == CHIP_KAVERI || adev->asic_type == CHIP_LIVERPOOL)
+amd/amdgpu/gfx_v7_0.c:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c:	case CHIP_KAVERI:
+amd/amdgpu/ci_dpm.c:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c.orig:MODULE_FIRMWARE("radeon/kaveri_pfp.bin");
+amd/amdgpu/gfx_v7_0.c.orig:MODULE_FIRMWARE("radeon/kaveri_me.bin");
+amd/amdgpu/gfx_v7_0.c.orig:MODULE_FIRMWARE("radeon/kaveri_ce.bin");
+amd/amdgpu/gfx_v7_0.c.orig:MODULE_FIRMWARE("radeon/kaveri_rlc.bin");
+amd/amdgpu/gfx_v7_0.c.orig:MODULE_FIRMWARE("radeon/kaveri_mec.bin");
+amd/amdgpu/gfx_v7_0.c.orig:MODULE_FIRMWARE("radeon/kaveri_mec2.bin");
+amd/amdgpu/gfx_v7_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c.orig:		chip_name = "kaveri";
+amd/amdgpu/gfx_v7_0.c.orig:	if (adev->asic_type == CHIP_KAVERI) {
+amd/amdgpu/gfx_v7_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c.orig:	if (adev->asic_type == CHIP_KAVERI) {
+amd/amdgpu/gfx_v7_0.c.orig:		if (adev->asic_type == CHIP_KAVERI) {
+amd/amdgpu/gfx_v7_0.c.orig:	if (adev->asic_type == CHIP_KAVERI)
+amd/amdgpu/gfx_v7_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/cik_sdma.c.orig:MODULE_FIRMWARE("radeon/kaveri_sdma.bin");
+amd/amdgpu/cik_sdma.c.orig:MODULE_FIRMWARE("radeon/kaveri_sdma1.bin");
+amd/amdgpu/cik_sdma.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/cik_sdma.c.orig:		chip_name = "kaveri";
+amd/amdgpu/dce_virtual.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_dpm.c:	"Kaveri/Kabini",
+amd/amdgpu/amdgpu_dpm.c:		} else if (controller->ucType == ATOM_PP_THERMALCONTROLLER_KAVERI) {
+amd/amdgpu/ci_dpm.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_device.c.orig:	"KAVERI",
+amd/amdgpu/amdgpu_device.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_device.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_device.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_vce.c.orig:#define FIRMWARE_KAVERI	"radeon/kaveri_vce.bin"
+amd/amdgpu/amdgpu_vce.c.orig:MODULE_FIRMWARE(FIRMWARE_KAVERI);
+amd/amdgpu/amdgpu_vce.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_vce.c.orig:		fw_name = FIRMWARE_KAVERI;
+amd/amdgpu/amdgpu_vce.c.orig:			case CHIP_KAVERI:
+amd/amdgpu/amdgpu_drv.c.orig:	/* Kaveri */
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1304, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1305, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1306, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1307, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1309, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x130A, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x130B, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x130C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x130D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x130E, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x130F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1310, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1311, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1312, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1313, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1315, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1316, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1317, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x1318, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x131B, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x131C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c.orig:	{0x1002, 0x131D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	/* Kaveri */
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1304, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1305, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1306, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1307, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1309, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x130A, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x130B, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x130C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x130D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x130E, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x130F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1310, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1311, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1312, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1313, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1315, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1316, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1317, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x1318, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x131B, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x131C, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_drv.c:	{0x1002, 0x131D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+amd/amdgpu/amdgpu_ucode.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_amdkfd.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_kms.c:		case CHIP_KAVERI:
+amd/amdgpu/amdgpu_kms.c:	if (adev->asic_type == CHIP_KAVERI ||
+amd/amdgpu/gmc_v7_0.c:	case CHIP_KAVERI:
+amd/amdgpu/gmc_v7_0.c:		case CHIP_KAVERI:  /* UVD, VCE do not support GPUVM */
+amd/amdgpu/gmc_v7_0.c:	if (adev->asic_type == CHIP_KAVERI) {
+amd/amdgpu/amdgpu_device.c:	"KAVERI",
+amd/amdgpu/amdgpu_device.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_device.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_device.c:	case CHIP_KAVERI:
+amd/amdgpu/cik.c:	case CHIP_KAVERI:
+amd/amdgpu/cik.c:	case CHIP_KAVERI:
+amd/amdgpu/cik.c:	case CHIP_KAVERI:
+amd/amdgpu/dce_v8_0.c:	case CHIP_KAVERI:
+amd/amdgpu/dce_v8_0.c:	if (adev->asic_type == CHIP_KAVERI) /* KV: 4 streams, 7 endpoints */
+amd/amdgpu/dce_v8_0.c:		if ((adev->asic_type == CHIP_KAVERI) ||
+amd/amdgpu/dce_v8_0.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_kms.c.orig:		case CHIP_KAVERI:
+amd/amdgpu/amdgpu_kms.c.orig:	if (adev->asic_type == CHIP_KAVERI ||
+amd/amdgpu/gfx_v6_0.c:	if (adev->asic_type == CHIP_KAVERI)
+amd/amdgpu/cik.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/cik.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/cik.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_vce.c:#define FIRMWARE_KAVERI	"radeon/kaveri_vce.bin"
+amd/amdgpu/amdgpu_vce.c:MODULE_FIRMWARE(FIRMWARE_KAVERI);
+amd/amdgpu/amdgpu_vce.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_vce.c:		fw_name = FIRMWARE_KAVERI;
+amd/amdgpu/amdgpu_vce.c:			case CHIP_KAVERI:
+amd/amdgpu/gmc_v7_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/gmc_v7_0.c.orig:		case CHIP_KAVERI:  /* UVD, VCE do not support GPUVM */
+amd/amdgpu/gmc_v7_0.c.orig:	if (adev->asic_type == CHIP_KAVERI) {
+amd/amdgpu/dce_v8_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/dce_v8_0.c.orig:	if (adev->asic_type == CHIP_KAVERI) /* KV: 4 streams, 7 endpoints */
+amd/amdgpu/dce_v8_0.c.orig:		if ((adev->asic_type == CHIP_KAVERI) ||
+amd/amdgpu/dce_v8_0.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/gfx_v7_0.c.rej:-	if (adev->asic_type == CHIP_KAVERI) {
+amd/amdgpu/gfx_v7_0.c.rej:+	if (adev->asic_type == CHIP_KAVERI || adev->asic_type == CHIP_LIVERPOOL) {
+amd/amdgpu/gfx_v7_0.c.rej:-	if (adev->asic_type == CHIP_KAVERI)
+amd/amdgpu/gfx_v7_0.c.rej:+	if (adev->asic_type == CHIP_KAVERI || adev->asic_type == CHIP_LIVERPOOL)
+amd/amdgpu/cik_sdma.c:MODULE_FIRMWARE("radeon/kaveri_sdma.bin");
+amd/amdgpu/cik_sdma.c:MODULE_FIRMWARE("radeon/kaveri_sdma1.bin");
+amd/amdgpu/cik_sdma.c:	case CHIP_KAVERI:
+amd/amdgpu/cik_sdma.c:		chip_name = "kaveri";
+amd/amdgpu/amdgpu_uvd.c.orig:#define FIRMWARE_KAVERI	"radeon/kaveri_uvd.bin"
+amd/amdgpu/amdgpu_uvd.c.orig:MODULE_FIRMWARE(FIRMWARE_KAVERI);
+amd/amdgpu/amdgpu_uvd.c.orig:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_uvd.c.orig:		fw_name = FIRMWARE_KAVERI;
+amd/amdgpu/amdgpu_uvd.c:#define FIRMWARE_KAVERI	"radeon/kaveri_uvd.bin"
+amd/amdgpu/amdgpu_uvd.c:MODULE_FIRMWARE(FIRMWARE_KAVERI);
+amd/amdgpu/amdgpu_uvd.c:	case CHIP_KAVERI:
+amd/amdgpu/amdgpu_uvd.c:		fw_name = FIRMWARE_KAVERI;
+amd/amdgpu/dce_virtual.c.orig:	case CHIP_KAVERI:
+amd/include/amd_shared.h.rej: 	CHIP_KAVERI,
+amd/include/pptable.h:#define ATOM_PP_THERMALCONTROLLER_KAVERI    19
+amd/include/atombios.h:// this IntegrateSystemInfoTable is used for Kaveri & Kabini APU
+amd/include/atombios.h:// this Table is used for Kaveri/Kabini APU
+radeon/radeon_pm.c.orig:	case CHIP_KAVERI:
+radeon/radeon.h:#define ASIC_IS_DCE81(rdev) ((rdev->family == CHIP_KAVERI))
+radeon/radeon_uvd.c:	case CHIP_KAVERI:
+radeon/radeon_kms.c:		case CHIP_KAVERI:
+radeon/pptable.h:#define ATOM_PP_THERMALCONTROLLER_KAVERI    19
+radeon/atombios.h:// this IntegrateSystemInfoTable is used for Kaveri & Kabini APU
+radeon/atombios.h:// this Table is used for Kaveri/Kabini APU
+radeon/radeon_family.h:	CHIP_KAVERI,
+radeon/cik.c:MODULE_FIRMWARE("radeon/KAVERI_pfp.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/KAVERI_me.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/KAVERI_ce.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/KAVERI_mec.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/KAVERI_rlc.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/KAVERI_sdma.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/kaveri_pfp.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/kaveri_me.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/kaveri_ce.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/kaveri_mec.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/kaveri_mec2.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/kaveri_rlc.bin");
+radeon/cik.c:MODULE_FIRMWARE("radeon/kaveri_sdma.bin");
+radeon/cik.c:	case CHIP_KAVERI:
+radeon/cik.c:	case CHIP_KAVERI:
+radeon/cik.c:		chip_name = "KAVERI";
+radeon/cik.c:		new_chip_name = "kaveri";
+radeon/cik.c:	if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c:	case CHIP_KAVERI:
+radeon/cik.c:		if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c:		if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c:	if (rdev->family == CHIP_KAVERI)
+radeon/cik.c:	if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c:		case CHIP_KAVERI:
+radeon/cik.c:	if (rdev->family == CHIP_KAVERI)
+radeon/cik.c:	case CHIP_KAVERI:
+radeon/cik.c:		if (rdev->family == CHIP_KAVERI) {
+radeon/radeon_asic.c:	case CHIP_KAVERI:
+radeon/radeon_asic.c:		if (rdev->family == CHIP_KAVERI) {
+radeon/radeon_pm.c:	case CHIP_KAVERI:
+radeon/radeon_device.c.orig:	"KAVERI",
+radeon/radeon_device.c:	"KAVERI",
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/KAVERI_pfp.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/KAVERI_me.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/KAVERI_ce.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/KAVERI_mec.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/KAVERI_rlc.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/KAVERI_sdma.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/kaveri_pfp.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/kaveri_me.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/kaveri_ce.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/kaveri_mec.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/kaveri_mec2.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/kaveri_rlc.bin");
+radeon/cik.c.orig:MODULE_FIRMWARE("radeon/kaveri_sdma.bin");
+radeon/cik.c.orig:	case CHIP_KAVERI:
+radeon/cik.c.orig:	case CHIP_KAVERI:
+radeon/cik.c.orig:		chip_name = "KAVERI";
+radeon/cik.c.orig:		new_chip_name = "kaveri";
+radeon/cik.c.orig:	if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c.orig:	case CHIP_KAVERI:
+radeon/cik.c.orig:		if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c.orig:		if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c.orig:	if (rdev->family == CHIP_KAVERI)
+radeon/cik.c.orig:	if (rdev->family == CHIP_KAVERI) {
+radeon/cik.c.orig:		case CHIP_KAVERI:
+radeon/cik.c.orig:	if (rdev->family == CHIP_KAVERI)
+radeon/cik.c.orig:	case CHIP_KAVERI:
+radeon/cik.c.orig:		if (rdev->family == CHIP_KAVERI) {
+radeon/radeon_vce.c:	case CHIP_KAVERI:
+radeon/atombios_crtc.c:		    (rdev->family == CHIP_KAVERI) ||
+radeon/radeon_atombios.c:		} else if (controller->ucType == ATOM_PP_THERMALCONTROLLER_KAVERI) {
+radeon/radeon.h.orig:#define ASIC_IS_DCE81(rdev) ((rdev->family == CHIP_KAVERI))

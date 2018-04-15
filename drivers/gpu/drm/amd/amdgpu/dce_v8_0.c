@@ -395,6 +395,7 @@ static int dce_v8_0_get_num_crtc(struct amdgpu_device *adev)
 		break;
 	case CHIP_KABINI:
 	case CHIP_MULLINS:
+	case CHIP_LIVERPOOL:
 		num_crtc = 2;
 		break;
 	default:
@@ -1083,6 +1084,8 @@ static void dce_v8_0_bandwidth_update(struct amdgpu_device *adev)
 	struct drm_display_mode *mode = NULL;
 	u32 num_heads = 0, lb_size;
 	int i;
+	// FIXME PS4: this stuff is broken
+	return;
 
 	amdgpu_display_update_priority(adev);
 
@@ -1378,6 +1381,8 @@ static int dce_v8_0_audio_init(struct amdgpu_device *adev)
 	else if ((adev->asic_type == CHIP_BONAIRE) ||
 		 (adev->asic_type == CHIP_HAWAII))/* BN/HW: 6 streams, 7 endpoints */
 		adev->mode_info.audio.num_pins = 7;
+	else if (adev->asic_type == CHIP_LIVERPOOL) /* LVP: 3 streams, 3 endpoints (?) */
+		adev->mode_info.audio.num_pins = 3;
 	else
 		adev->mode_info.audio.num_pins = 3;
 
@@ -1392,7 +1397,11 @@ static int dce_v8_0_audio_init(struct amdgpu_device *adev)
 		adev->mode_info.audio.pin[i].id = i;
 		/* disable audio.  it will be set up later */
 		/* XXX remove once we switch to ip funcs */
-		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+		/* Liverpool pin 2 is S/PDIF and should always be available */
+		if (adev->asic_type == CHIP_LIVERPOOL && i == 2)
+			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], true);
+		else
+			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
 	}
 
 	return 0;
@@ -1965,7 +1974,8 @@ static int dce_v8_0_crtc_do_set_base(struct drm_crtc *crtc,
 	}
 
 	/* Bytes per pixel may have changed */
-	dce_v8_0_bandwidth_update(adev);
+	if (adev->asic_type != CHIP_LIVERPOOL)
+		dce_v8_0_bandwidth_update(adev);
 
 	return 0;
 }
@@ -2209,7 +2219,7 @@ static int dce_v8_0_cursor_move_locked(struct drm_crtc *crtc,
 	/* avivo cursor are offset into the total surface */
 	x += crtc->x;
 	y += crtc->y;
-	DRM_DEBUG("x %d y %d c->x %d c->y %d\n", x, y, crtc->x, crtc->y);
+	//DRM_DEBUG("x %d y %d c->x %d c->y %d\n", x, y, crtc->x, crtc->y);
 
 	if (x < 0) {
 		xorigin = min(-x, amdgpu_crtc->max_cursor_width - 1);
@@ -2581,8 +2591,13 @@ static int dce_v8_0_crtc_init(struct amdgpu_device *adev, int index)
 	amdgpu_crtc->crtc_id = index;
 	adev->mode_info.crtcs[index] = amdgpu_crtc;
 
-	amdgpu_crtc->max_cursor_width = CIK_CURSOR_WIDTH;
-	amdgpu_crtc->max_cursor_height = CIK_CURSOR_HEIGHT;
+	if (adev->asic_type == CHIP_LIVERPOOL) {
+		amdgpu_crtc->max_cursor_width = LVP_CURSOR_WIDTH;
+		amdgpu_crtc->max_cursor_height = LVP_CURSOR_HEIGHT;
+	} else {
+		amdgpu_crtc->max_cursor_width = CIK_CURSOR_WIDTH;
+		amdgpu_crtc->max_cursor_height = CIK_CURSOR_HEIGHT;
+	}
 	adev->ddev->mode_config.cursor_width = amdgpu_crtc->max_cursor_width;
 	adev->ddev->mode_config.cursor_height = amdgpu_crtc->max_cursor_height;
 
@@ -2622,6 +2637,10 @@ static int dce_v8_0_early_init(void *handle)
 	case CHIP_MULLINS:
 		adev->mode_info.num_hpd = 6;
 		adev->mode_info.num_dig = 6; /* ? */
+		break;
+	case CHIP_LIVERPOOL:
+		adev->mode_info.num_hpd = 3; /* ? */
+		adev->mode_info.num_dig = 3; /* ? */
 		break;
 	default:
 		/* FIXME: not supported yet */
@@ -2734,7 +2753,10 @@ static int dce_v8_0_hw_init(void *handle)
 	dce_v8_0_hpd_init(adev);
 
 	for (i = 0; i < adev->mode_info.audio.num_pins; i++) {
-		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+		if (adev->asic_type == CHIP_LIVERPOOL && i == 2)
+			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], true);
+		else
+			dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
 	}
 
 	dce_v8_0_pageflip_interrupt_init(adev);
@@ -3025,7 +3047,7 @@ static int dce_v8_0_crtc_irq(struct amdgpu_device *adev,
 		if (amdgpu_irq_enabled(adev, source, irq_type)) {
 			drm_handle_vblank(adev->ddev, crtc);
 		}
-		DRM_DEBUG("IH: D%d vblank\n", crtc + 1);
+		//DRM_DEBUG("IH: D%d vblank\n", crtc + 1);
 		break;
 	case 1: /* vline */
 		if (disp_int & interrupt_status_offsets[crtc].vline)
@@ -3033,10 +3055,10 @@ static int dce_v8_0_crtc_irq(struct amdgpu_device *adev,
 		else
 			DRM_DEBUG("IH: IH event w/o asserted irq bit?\n");
 
-		DRM_DEBUG("IH: D%d vline\n", crtc + 1);
+		//DRM_DEBUG("IH: D%d vline\n", crtc + 1);
 		break;
 	default:
-		DRM_DEBUG("Unhandled interrupt: %d %d\n", entry->src_id, entry->src_data[0]);
+		//DRM_DEBUG("Unhandled interrupt: %d %d\n", entry->src_id, entry->src_data[0]);
 		break;
 	}
 

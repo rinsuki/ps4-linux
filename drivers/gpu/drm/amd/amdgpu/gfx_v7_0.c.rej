@@ -1,0 +1,321 @@
+--- linux-4.14.14/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c	2018-01-17 09:45:30.000000000 +0100
++++ linux-4.14.14-mod/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c	2018-04-11 14:30:33.458511889 +0200
+@@ -3316,7 +3894,7 @@
+ 		WREG32(mmCP_MEC_ME1_UCODE_DATA, le32_to_cpup(fw_data++));
+ 	WREG32(mmCP_MEC_ME1_UCODE_ADDR, 0);
+ 
+-	if (adev->asic_type == CHIP_KAVERI) {
++	if (adev->asic_type == CHIP_KAVERI || adev->asic_type == CHIP_LIVERPOOL) {
+ 		const struct gfx_firmware_header_v1_0 *mec2_hdr;
+ 
+ 		if (!adev->gfx.mec2_fw)
+@@ -3896,6 +4474,10 @@
+ 			adev->gfx.rlc.reg_list = spectre_rlc_save_restore_register_list;
+ 			adev->gfx.rlc.reg_list_size =
+ 				(u32)ARRAY_SIZE(spectre_rlc_save_restore_register_list);
++		} else if (adev->asic_type == CHIP_LIVERPOOL) {
++			adev->gfx.rlc.reg_list = liverpool_rlc_save_restore_register_list;
++			adev->gfx.rlc.reg_list_size =
++				(u32)ARRAY_SIZE(liverpool_rlc_save_restore_register_list);
+ 		} else {
+ 			adev->gfx.rlc.reg_list = kalindi_rlc_save_restore_register_list;
+ 			adev->gfx.rlc.reg_list_size =
+@@ -4399,7 +4981,7 @@
+ 	u32 bo_offset = 0;
+ 	u32 table_offset, table_size;
+ 
+-	if (adev->asic_type == CHIP_KAVERI)
++	if (adev->asic_type == CHIP_KAVERI || adev->asic_type == CHIP_LIVERPOOL)
+ 		max_me = 5;
+ 
+ 	if (adev->gfx.rlc.cp_table_ptr == NULL)
+@@ -5009,6 +5595,23 @@
+ 		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
+ 		gb_addr_config = BONAIRE_GB_ADDR_CONFIG_GOLDEN;
+ 		break;
++	case CHIP_LIVERPOOL:
++		adev->gfx.config.max_shader_engines = 2; // Verified
++		adev->gfx.config.max_tile_pipes = 8; // Verified
++		adev->gfx.config.max_cu_per_sh = 10; // Probably OK
++		adev->gfx.config.max_sh_per_se = 1; // Verified
++		adev->gfx.config.max_backends_per_se = 1; // Probably OK?
++		adev->gfx.config.max_texture_channel_caches = 4; // ??
++		adev->gfx.config.max_gprs = 256;
++		adev->gfx.config.max_gs_threads = 32; // ??
++		adev->gfx.config.max_hw_contexts = 8;
++
++		adev->gfx.config.sc_prim_fifo_size_frontend = 0x20;
++		adev->gfx.config.sc_prim_fifo_size_backend = 0x100;
++		adev->gfx.config.sc_hiz_tile_fifo_size = 0x30;
++		adev->gfx.config.sc_earlyz_tile_fifo_size = 0x130;
++		gb_addr_config = HAWAII_GB_ADDR_CONFIG_GOLDEN;
++		break;
+ 	case CHIP_KABINI:
+ 	case CHIP_MULLINS:
+ 	default:
+@@ -5135,6 +5738,7 @@
+ 	case CHIP_HAWAII:
+ 	case CHIP_KABINI:
+ 	case CHIP_MULLINS:
++	case CHIP_LIVERPOOL:
+ 	default:
+ 		adev->gfx.mec.num_mec = 1;
+ 		break;
+@@ -5330,11 +5934,11 @@
+ 	return -ETIMEDOUT;
+ }
+ 
+-static int gfx_v7_0_soft_reset(void *handle)
++static bool gfx_v7_0_check_soft_reset(void *handle)
+ {
++	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 	u32 grbm_soft_reset = 0, srbm_soft_reset = 0;
+ 	u32 tmp;
+-	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
+ 	/* GRBM_STATUS */
+ 	tmp = RREG32(mmGRBM_STATUS);
+@@ -5343,69 +5947,193 @@
+ 		   GRBM_STATUS__TA_BUSY_MASK | GRBM_STATUS__VGT_BUSY_MASK |
+ 		   GRBM_STATUS__DB_BUSY_MASK | GRBM_STATUS__CB_BUSY_MASK |
+ 		   GRBM_STATUS__GDS_BUSY_MASK | GRBM_STATUS__SPI_BUSY_MASK |
+-		   GRBM_STATUS__IA_BUSY_MASK | GRBM_STATUS__IA_BUSY_NO_DMA_MASK))
+-		grbm_soft_reset |= GRBM_SOFT_RESET__SOFT_RESET_CP_MASK |
+-			GRBM_SOFT_RESET__SOFT_RESET_GFX_MASK;
+-
+-	if (tmp & (GRBM_STATUS__CP_BUSY_MASK | GRBM_STATUS__CP_COHERENCY_BUSY_MASK)) {
+-		grbm_soft_reset |= GRBM_SOFT_RESET__SOFT_RESET_CP_MASK;
+-		srbm_soft_reset |= SRBM_SOFT_RESET__SOFT_RESET_GRBM_MASK;
++		   GRBM_STATUS__IA_BUSY_MASK | GRBM_STATUS__IA_BUSY_NO_DMA_MASK |
++		   GRBM_STATUS__CP_BUSY_MASK | GRBM_STATUS__CP_COHERENCY_BUSY_MASK)) {
++		grbm_soft_reset = REG_SET_FIELD(grbm_soft_reset,
++						GRBM_SOFT_RESET, SOFT_RESET_CP, 1);
++		grbm_soft_reset = REG_SET_FIELD(grbm_soft_reset,
++						GRBM_SOFT_RESET, SOFT_RESET_GFX, 1);
++		srbm_soft_reset = REG_SET_FIELD(srbm_soft_reset,
++						SRBM_SOFT_RESET, SOFT_RESET_GRBM, 1);
+ 	}
+ 
+ 	/* GRBM_STATUS2 */
+ 	tmp = RREG32(mmGRBM_STATUS2);
+-	if (tmp & GRBM_STATUS2__RLC_BUSY_MASK)
+-		grbm_soft_reset |= GRBM_SOFT_RESET__SOFT_RESET_RLC_MASK;
++	if (REG_GET_FIELD(tmp, GRBM_STATUS2, RLC_BUSY))
++		grbm_soft_reset = REG_SET_FIELD(grbm_soft_reset,
++						GRBM_SOFT_RESET, SOFT_RESET_RLC, 1);
+ 
+ 	/* SRBM_STATUS */
+ 	tmp = RREG32(mmSRBM_STATUS);
+-	if (tmp & SRBM_STATUS__GRBM_RQ_PENDING_MASK)
+-		srbm_soft_reset |= SRBM_SOFT_RESET__SOFT_RESET_GRBM_MASK;
++	if (REG_GET_FIELD(tmp, SRBM_STATUS, GRBM_RQ_PENDING))
++		srbm_soft_reset = REG_SET_FIELD(srbm_soft_reset,
++						SRBM_SOFT_RESET, SOFT_RESET_GRBM, 1);
+ 
+ 	if (grbm_soft_reset || srbm_soft_reset) {
+-		/* disable CG/PG */
+-		gfx_v7_0_fini_pg(adev);
+-		gfx_v7_0_update_cg(adev, false);
+-
+-		/* stop the rlc */
+-		gfx_v7_0_rlc_stop(adev);
+-
+-		/* Disable GFX parsing/prefetching */
+-		WREG32(mmCP_ME_CNTL, CP_ME_CNTL__ME_HALT_MASK | CP_ME_CNTL__PFP_HALT_MASK | CP_ME_CNTL__CE_HALT_MASK);
+-
+-		/* Disable MEC parsing/prefetching */
+-		WREG32(mmCP_MEC_CNTL, CP_MEC_CNTL__MEC_ME1_HALT_MASK | CP_MEC_CNTL__MEC_ME2_HALT_MASK);
+-
+-		if (grbm_soft_reset) {
+-			tmp = RREG32(mmGRBM_SOFT_RESET);
+-			tmp |= grbm_soft_reset;
+-			dev_info(adev->dev, "GRBM_SOFT_RESET=0x%08X\n", tmp);
+-			WREG32(mmGRBM_SOFT_RESET, tmp);
+-			tmp = RREG32(mmGRBM_SOFT_RESET);
+-
+-			udelay(50);
+-
+-			tmp &= ~grbm_soft_reset;
+-			WREG32(mmGRBM_SOFT_RESET, tmp);
+-			tmp = RREG32(mmGRBM_SOFT_RESET);
+-		}
++		adev->gfx.grbm_soft_reset = grbm_soft_reset;
++		adev->gfx.srbm_soft_reset = srbm_soft_reset;
++		return true;
++	} else {
++		adev->gfx.grbm_soft_reset = 0;
++		adev->gfx.srbm_soft_reset = 0;
++		return false;
++	}
++}
+ 
+-		if (srbm_soft_reset) {
+-			tmp = RREG32(mmSRBM_SOFT_RESET);
+-			tmp |= srbm_soft_reset;
+-			dev_info(adev->dev, "SRBM_SOFT_RESET=0x%08X\n", tmp);
+-			WREG32(mmSRBM_SOFT_RESET, tmp);
+-			tmp = RREG32(mmSRBM_SOFT_RESET);
+-
+-			udelay(50);
+-
+-			tmp &= ~srbm_soft_reset;
+-			WREG32(mmSRBM_SOFT_RESET, tmp);
+-			tmp = RREG32(mmSRBM_SOFT_RESET);
++static void gfx_v7_0_inactive_hqd(struct amdgpu_device *adev,
++				  struct amdgpu_ring *ring)
++{
++	int i;
++
++	cik_srbm_select(adev, ring->me, ring->pipe, ring->queue, 0);
++	if (RREG32(mmCP_HQD_ACTIVE) & CP_HQD_ACTIVE__ACTIVE_MASK) {
++		u32 tmp;
++		tmp = RREG32(mmCP_HQD_DEQUEUE_REQUEST);
++		tmp = REG_SET_FIELD(tmp, CP_HQD_DEQUEUE_REQUEST,
++				    DEQUEUE_REQ, 2);
++		WREG32(mmCP_HQD_DEQUEUE_REQUEST, tmp);
++		for (i = 0; i < adev->usec_timeout; i++) {
++			if (!(RREG32(mmCP_HQD_ACTIVE) & CP_HQD_ACTIVE__ACTIVE_MASK))
++				break;
++			udelay(1);
+ 		}
+-		/* Wait a little for things to settle down */
++	}
++}
++
++static int gfx_v7_0_pre_soft_reset(void *handle)
++{
++	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
++	u32 grbm_soft_reset = 0, srbm_soft_reset = 0;
++	int i;
++
++	if ((!adev->gfx.grbm_soft_reset) &&
++	    (!adev->gfx.srbm_soft_reset))
++		return 0;
++
++	grbm_soft_reset = adev->gfx.grbm_soft_reset;
++	srbm_soft_reset = adev->gfx.srbm_soft_reset;
++
++	/* disable CG/PG */
++	gfx_v7_0_fini_pg(adev);
++	gfx_v7_0_update_cg(adev, false);
++
++	/* stop the rlc */
++	gfx_v7_0_rlc_stop(adev);
++
++	/* Disable GFX parsing/prefetching */
++	gfx_v7_0_cp_gfx_enable(adev, false);
++
++	for (i = 0; i < adev->gfx.num_compute_rings; i++) {
++		struct amdgpu_ring *ring = &adev->gfx.compute_ring[i];
++
++		gfx_v7_0_inactive_hqd(adev, ring);
++	}
++
++	/* Disable MEC parsing/prefetching */
++	gfx_v7_0_cp_compute_enable(adev, false);
++
++	return 0;
++}
++
++static int gfx_v7_0_soft_reset(void *handle)
++{
++	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
++	u32 grbm_soft_reset = 0, srbm_soft_reset = 0;
++	u32 tmp;
++
++	if ((!adev->gfx.grbm_soft_reset) &&
++	    (!adev->gfx.srbm_soft_reset))
++		return 0;
++
++	grbm_soft_reset = adev->gfx.grbm_soft_reset;
++	srbm_soft_reset = adev->gfx.srbm_soft_reset;
++
++	if (grbm_soft_reset || srbm_soft_reset) {
++		tmp = RREG32(mmGMCON_DEBUG);
++		tmp = REG_SET_FIELD(tmp, GMCON_DEBUG, GFX_STALL, 1);
++		tmp = REG_SET_FIELD(tmp, GMCON_DEBUG, GFX_CLEAR, 1);
++		WREG32(mmGMCON_DEBUG, tmp);
++		udelay(50);
++	}
++
++	if (grbm_soft_reset) {
++		tmp = RREG32(mmGRBM_SOFT_RESET);
++		tmp |= grbm_soft_reset;
++		dev_info(adev->dev, "GRBM_SOFT_RESET=0x%08X\n", tmp);
++		WREG32(mmGRBM_SOFT_RESET, tmp);
++		tmp = RREG32(mmGRBM_SOFT_RESET);
++
++		udelay(50);
++
++		tmp &= ~grbm_soft_reset;
++		WREG32(mmGRBM_SOFT_RESET, tmp);
++		tmp = RREG32(mmGRBM_SOFT_RESET);
++	}
++
++	if (srbm_soft_reset) {
++		tmp = RREG32(mmSRBM_SOFT_RESET);
++		tmp |= srbm_soft_reset;
++		dev_info(adev->dev, "SRBM_SOFT_RESET=0x%08X\n", tmp);
++		WREG32(mmSRBM_SOFT_RESET, tmp);
++		tmp = RREG32(mmSRBM_SOFT_RESET);
++
+ 		udelay(50);
++
++		tmp &= ~srbm_soft_reset;
++		WREG32(mmSRBM_SOFT_RESET, tmp);
++		tmp = RREG32(mmSRBM_SOFT_RESET);
+ 	}
++
++	if (grbm_soft_reset || srbm_soft_reset) {
++		tmp = RREG32(mmGMCON_DEBUG);
++		tmp = REG_SET_FIELD(tmp, GMCON_DEBUG, GFX_STALL, 0);
++		tmp = REG_SET_FIELD(tmp, GMCON_DEBUG, GFX_CLEAR, 0);
++		WREG32(mmGMCON_DEBUG, tmp);
++	}
++
++	/* Wait a little for things to settle down */
++	udelay(50);
++
++	return 0;
++}
++
++static void gfx_v7_0_init_hqd(struct amdgpu_device *adev,
++			      struct amdgpu_ring *ring)
++{
++	cik_srbm_select(adev, ring->me, ring->pipe, ring->queue, 0);
++	WREG32(mmCP_HQD_DEQUEUE_REQUEST, 0);
++	WREG32(mmCP_HQD_PQ_RPTR, 0);
++	WREG32(mmCP_HQD_PQ_WPTR, 0);
++	cik_srbm_select(adev, 0, 0, 0, 0);
++}
++
++static int gfx_v7_0_post_soft_reset(void *handle)
++{
++	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
++	u32 grbm_soft_reset = 0, srbm_soft_reset = 0;
++	int i;
++
++	if ((!adev->gfx.grbm_soft_reset) &&
++	    (!adev->gfx.srbm_soft_reset))
++		return 0;
++
++	grbm_soft_reset = adev->gfx.grbm_soft_reset;
++	srbm_soft_reset = adev->gfx.srbm_soft_reset;
++
++	gfx_v7_0_cp_gfx_resume(adev);
++
++	for (i = 0; i < adev->gfx.num_compute_rings; i++) {
++		struct amdgpu_ring *ring = &adev->gfx.compute_ring[i];
++
++		gfx_v7_0_init_hqd(adev, ring);
++	}
++	gfx_v7_0_cp_compute_resume(adev);
++
++	gfx_v7_0_rlc_start(adev);
++
++	gfx_v7_0_update_cg(adev, true);
++	gfx_v7_0_init_pg(adev);
++
+ 	return 0;
+ }
+ 

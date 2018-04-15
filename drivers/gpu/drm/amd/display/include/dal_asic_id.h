@@ -50,6 +50,8 @@
  * 3-4-1-1 (CU-Pix-Primitive-RB) */
 #define KV_SPOOKY_A0 0x41
 
+#define LVP_STARSHA_A0 0x61
+
 /* KB with Kalindi GFX core, 2-4-1-1 (CU-Pix-Primitive-RB) */
 #define KB_KALINDI_A0 0x81
 
