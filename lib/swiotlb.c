@@ -737,7 +737,7 @@ out_unmap:
 	swiotlb_tbl_unmap_single(dev, phys_addr, size, DMA_TO_DEVICE,
 			DMA_ATTR_SKIP_CPU_SYNC);
 out_warn:
-	if ((attrs & DMA_ATTR_NO_WARN) && printk_ratelimit()) {
+	if (!(attrs & DMA_ATTR_NO_WARN) && printk_ratelimit()) {
 		dev_warn(dev,
 			"swiotlb: coherent allocation failed, size=%zu\n",
 			size);
@@ -1087,6 +1087,6 @@ const struct dma_map_ops swiotlb_dma_ops = {
 	.unmap_sg		= swiotlb_unmap_sg_attrs,
 	.map_page		= swiotlb_map_page,
 	.unmap_page		= swiotlb_unmap_page,
-	.dma_supported		= swiotlb_dma_supported,
+	.dma_supported		= dma_direct_supported,
 };
 #endif /* CONFIG_DMA_DIRECT_OPS */
