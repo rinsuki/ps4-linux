@@ -1919,6 +1919,7 @@ static int negotiate_mq(struct blkfront_info *info)
 			      GFP_KERNEL);
 	if (!info->rinfo) {
 		xenbus_dev_fatal(info->xbdev, -ENOMEM, "allocating ring_info structure");
+		info->nr_rings = 0;
 		return -ENOMEM;
 	}
 
@@ -2493,6 +2494,9 @@ static int blkfront_remove(struct xenbus_device *xbdev)
 
 	dev_dbg(&xbdev->dev, "%s removed", xbdev->nodename);
 
+	if (!info)
+		return 0;
+
 	blkif_free(info, 0);
 
 	mutex_lock(&info->mutex);
@@ -2670,8 +2674,8 @@ static void purge_persistent_grants(struct blkfront_info *info)
 			list_del(&gnt_list_entry->node);
 			gnttab_end_foreign_access(gnt_list_entry->gref, 0, 0UL);
 			rinfo->persistent_gnts_c--;
-			__free_page(gnt_list_entry->page);
-			kfree(gnt_list_entry);
+			gnt_list_entry->gref = GRANT_INVALID_REF;
+			list_add_tail(&gnt_list_entry->node, &rinfo->grants);
 		}
 
 		spin_unlock_irqrestore(&rinfo->ring_lock, flags);
