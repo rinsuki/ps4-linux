@@ -1024,27 +1024,27 @@ static void cik_init_golden_registers(struct amdgpu_device *adev)
 							ARRAY_SIZE(hawaii_golden_spm_registers));
 		break;
 	case CHIP_LIVERPOOL:
-		/*amdgpu_program_register_sequence(adev,
+		/*amdgpu_device_program_register_sequence(adev,
 						 liverpool_mgcg_cgcg_init,
 						 (const u32)ARRAY_SIZE(liverpool_mgcg_cgcg_init));*/
-		amdgpu_program_register_sequence(adev,
+		amdgpu_device_program_register_sequence(adev,
 						 liverpool_golden_registers,
 						 (const u32)ARRAY_SIZE(liverpool_golden_registers));
-		amdgpu_program_register_sequence(adev,
+		amdgpu_device_program_register_sequence(adev,
 						 liverpool_golden_common_registers,
 						 (const u32)ARRAY_SIZE(liverpool_golden_common_registers));
 		break;
 	case CHIP_GLADIUS:
-		amdgpu_program_register_sequence(adev,
+		amdgpu_device_program_register_sequence(adev,
 						 gladius_mgcg_cgcg_init,
 						 (const u32)ARRAY_SIZE(gladius_mgcg_cgcg_init));
-		amdgpu_program_register_sequence(adev,
+		amdgpu_device_program_register_sequence(adev,
 						 gladius_golden_registers,
 						 (const u32)ARRAY_SIZE(gladius_golden_registers));
-		amdgpu_program_register_sequence(adev,
+		amdgpu_device_program_register_sequence(adev,
 						 gladius_golden_common_registers,
 						 (const u32)ARRAY_SIZE(gladius_golden_common_registers));
-		amdgpu_program_register_sequence(adev,
+		amdgpu_device_program_register_sequence(adev,
 						 hawaii_golden_spm_registers,
 						 (const u32)ARRAY_SIZE(hawaii_golden_spm_registers));
 		break;
@@ -2353,40 +2353,40 @@ int cik_set_ip_blocks(struct amdgpu_device *adev)
 		amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block);
 		break;
 	case CHIP_LIVERPOOL:
-		amdgpu_ip_block_add(adev, &cik_common_ip_block);
-		amdgpu_ip_block_add(adev, &gmc_v7_0_ip_block);
-		amdgpu_ip_block_add(adev, &cik_ih_ip_block);
-		//amdgpu_ip_block_add(adev, &pp_smu_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
+		//amdgpu_device_ip_block_add(adev, &pp_smu_ip_block);
 		if (adev->enable_virtual_display)
-			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
+			amdgpu_device_ip_block_add(adev, &dce_virtual_ip_block);
 #if defined(CONFIG_DRM_AMD_DC)
 		else if (amdgpu_device_has_dc_support(adev))
-			amdgpu_ip_block_add(adev, &dm_ip_block);
+			amdgpu_device_ip_block_add(adev, &dm_ip_block);
 #endif
 		else
-			amdgpu_ip_block_add(adev, &dce_v8_1_ip_block);
-		amdgpu_ip_block_add(adev, &gfx_v7_1_ip_block);
-		amdgpu_ip_block_add(adev, &cik_sdma_ip_block);
-		/*amdgpu_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
-		/*amdgpu_ip_block_add(adev, &vce_v2_0_ip_block)*/;
+			amdgpu_device_ip_block_add(adev, &dce_v8_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &gfx_v7_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
+		/*amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
+		/*amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block)*/;
 		break;
 	case CHIP_GLADIUS:
-		amdgpu_ip_block_add(adev, &cik_common_ip_block);
-		amdgpu_ip_block_add(adev, &gmc_v7_0_ip_block);
-		amdgpu_ip_block_add(adev, &cik_ih_ip_block);
-		//amdgpu_ip_block_add(adev, &pp_smu_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
+		//amdgpu_device_ip_block_add(adev, &pp_smu_ip_block);
 		if (adev->enable_virtual_display)
-			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
+			amdgpu_device_ip_block_add(adev, &dce_virtual_ip_block);
 #if defined(CONFIG_DRM_AMD_DC)
 		else if (amdgpu_device_has_dc_support(adev))
-			amdgpu_ip_block_add(adev, &dm_ip_block);
+			amdgpu_device_ip_block_add(adev, &dm_ip_block);
 #endif
 		else
-			amdgpu_ip_block_add(adev, &dce_v8_1_ip_block);
-		amdgpu_ip_block_add(adev, &gfx_v7_1_ip_block);
-		amdgpu_ip_block_add(adev, &cik_sdma_ip_block);
-		/*amdgpu_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
-		/*amdgpu_ip_block_add(adev, &vce_v2_0_ip_block)*/;
+			amdgpu_device_ip_block_add(adev, &dce_v8_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &gfx_v7_1_ip_block);
+		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
+		/*amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block)*/;
+		/*amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block)*/;
 		break;
 	default:
 		/* FIXME: not supported yet */
