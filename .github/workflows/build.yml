@@ -1,0 +1,19 @@
+name: Build Kernel
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: Ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: sudo apt-get install -y libelf-dev linux-firmware
+    - run: make -j2 bzImage
+    - run: cp arch/x86/boot/bzImage ./bzImage
+    - uses: actions/upload-artifact@v1
+      with:
+        name: bzImage
+        path: bzImage
