@@ -9,6 +9,8 @@ jobs:
     runs-on: Ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: sudo apt-get install -y libelf-dev
     - run: make -j`nproc` bzImage
     - run: cp arch/x86/boot/bzImage ./bzImage
     - uses: actions/upload-artifact@v1
